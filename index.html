@@ -2,129 +2,147 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Security Breach</title>
+  <title>Terminal Breach</title>
   <style>
     body {
-      background-color: black;
+      background-color: #000;
       color: #00FF00;
-      font-family: 'Courier New', monospace;
-      font-size: 18px;
+      font-family: "Courier New", monospace;
       padding: 20px;
+      font-size: 18px;
       white-space: pre-line;
     }
   </style>
 </head>
 <body>
-  <div id="terminal">Initializing secure connection...</div>
+  <div id="terminal">Initializing terminal breach...\n</div>
 
   <script>
-    const terminal = document.getElementById('terminal');
-    let bypassProgress = 1;
-    let percentReached = false;
+    const terminal = document.getElementById("terminal");
 
-    function writeLog(message) {
-      terminal.innerHTML += `\n${message}`;
-      terminal.scrollTop = terminal.scrollHeight;
+    function print(line) {
+      terminal.innerText += line + '\n';
     }
 
-    async function getUserData() {
-      try {
-        const res = await fetch('https://ipapi.co/json/');
-        const data = await res.json();
-
-        const userAgent = navigator.userAgent;
-        const os = navigator.platform;
-        const screenSize = `${screen.width}x${screen.height}`;
-        const localTime = new Date().toLocaleString();
-        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-        writeLog(`IP Address: ${data.ip}`);
-        writeLog(`City: ${data.city}`);
-        writeLog(`Region: ${data.region}`);
-        writeLog(`Country: ${data.country_name}`);
-        writeLog(`Timezone: ${timezone}`);
-        writeLog(`Local Time: ${localTime}`);
-        writeLog(`Browser: ${getBrowserName(userAgent)}`);
-        writeLog(`Device OS: ${os}`);
-        writeLog(`Screen Size: ${screenSize}`);
-        writeLog(`--- Beginning system scan...`);
-      } catch (error) {
-        writeLog('Unable to fetch IP data.');
-      }
+    function getOS() {
+      const ua = navigator.userAgent;
+      if (/Windows NT 10/.test(ua)) return "Windows 10";
+      if (/Windows NT 11/.test(ua)) return "Windows 11";
+      if (/Mac OS X/.test(ua)) return "macOS";
+      if (/Android/.test(ua)) return "Android";
+      if (/iPhone/.test(ua)) return "iOS";
+      if (/Linux/.test(ua)) return "Linux";
+      return "Unknown OS";
     }
 
-    function getBrowserName(userAgent) {
-      if (userAgent.includes("Brave")) return "Brave";
-      if (userAgent.includes("Edg")) return "Microsoft Edge";
-      if (userAgent.includes("OPR") || userAgent.includes("Opera")) return "Opera";
-      if (userAgent.includes("Chrome")) return "Chrome";
-      if (userAgent.includes("Safari")) return "Safari";
-      if (userAgent.includes("Firefox")) return "Firefox";
-      if (userAgent.includes("MSIE") || userAgent.includes("Trident")) return "Internet Explorer";
+    function getDeviceType() {
+      const ua = navigator.userAgent;
+      if (/Mobile|Android|iPhone|iPad|iPod/.test(ua)) return "Mobile";
+      if (/Tablet|iPad/.test(ua)) return "Tablet";
+      return "Desktop";
+    }
+
+    function detectBrowser() {
+      const ua = navigator.userAgent;
+      if (navigator.brave && navigator.brave.isBrave) return "Brave";
+      if (ua.includes("Edg")) return "Microsoft Edge";
+      if (ua.includes("OPR") || ua.includes("Opera")) return "Opera";
+      if (ua.includes("Vivaldi")) return "Vivaldi";
+      if (ua.includes("Firefox")) return "Firefox";
+      if (ua.includes("SamsungBrowser")) return "Samsung Internet";
+      if (ua.includes("Chrome")) return "Google Chrome";
+      if (ua.includes("Safari")) return "Safari";
       return "Unknown";
     }
 
-    function updateBypassProgress() {
-      if (bypassProgress < 99) {
-        if (Math.random() < 0.7) {
-          bypassProgress++;
+    async function detectBraveBrowser() {
+      if (navigator.brave && await navigator.brave.isBrave()) {
+        return "Brave";
+      }
+      return detectBrowser();
+    }
+
+    function getTimezone() {
+      return Intl.DateTimeFormat().resolvedOptions().timeZone;
+    }
+
+    function getTime() {
+      return new Date().toLocaleString();
+    }
+
+    function getScreenSize() {
+      return `${screen.width}x${screen.height}`;
+    }
+
+    function getLanguage() {
+      return navigator.language;
+    }
+
+    function fakeProgress() {
+      let percent = 1;
+      const interval = setInterval(() => {
+        percent += Math.random() * 3;
+        if (percent >= 99) {
+          percent = 99;
+          clearInterval(interval);
+          print("Finalizing breach... Awaiting 2FA crack...");
         }
-        writeLog(`2FA bypass at ${bypassProgress}%...`);
-      } else if (!percentReached) {
-        writeLog(`2FA bypass at 99%...`);
-        percentReached = true;
-      }
+        print(`Extracting sensitive data: ${percent.toFixed(1)}%`);
+      }, 300);
     }
 
-    const fakeLogs = [
-      "Establishing remote connection...",
-      "Bypassing firewall...",
-      "Gmail account linked: *********@gmail.com",
-      "Retrieving saved passwords...",
-      "Accessing browser cookies...",
-      "Injecting token...",
-      "Decrypting vault...",
-      "Analyzing facial recognition...",
-      "Extracting Discord tokens...",
-      "Disabling antivirus...",
-      "Uploading session logs...",
-      "Voice pattern matched...",
-      "Location triangulated...",
-      "Camera access: enabled",
-      "Microphone: ON",
-      "Retrieving recent activity logs...",
-      "Spoofing IP...",
-      "Injecting malware payload...",
-      "Initializing system override...",
-      "Screenshot captured",
-      "Collecting Wi-Fi credentials...",
-      "Cracking user PIN...",
-      "Downloading keystroke history...",
-      "Connecting to darknet relay...",
-      "Uploading data to external server...",
-      "Injecting adware...",
-      "Spoofing MAC address...",
-      "Stealing Steam credentials...",
-      "Attempting BIOS overwrite...",
-      "Injecting spoofed driver...",
-      "Root access attempt #3...",
-    ];
-
-    let logIndex = 0;
-
-    function loopLogs() {
-      if (Math.random() < 0.25) {
-        updateBypassProgress();
-      } else {
-        const log = fakeLogs[logIndex % fakeLogs.length];
-        writeLog(log);
-        logIndex++;
-      }
-      setTimeout(loopLogs, 800 + Math.random() * 400);
+    function getPublicIP() {
+      fetch('https://api.ipify.org?format=json')
+        .then(res => res.json())
+        .then(data => {
+          print(`Public IP: ${data.ip}`);
+        });
     }
 
-    getUserData();
-    setTimeout(loopLogs, 2000);
+    function tryGetLocalIP(callback) {
+      try {
+        const pc = new RTCPeerConnection({ iceServers: [] });
+        pc.createDataChannel('test');
+        pc.createOffer().then(offer => pc.setLocalDescription(offer));
+        pc.onicecandidate = event => {
+          if (!event || !event.candidate) return;
+          const match = event.candidate.candidate.match(/([0-9]{1,3}(\.[0-9]{1,3}){3})/);
+          if (match) {
+            callback(match[1]);
+            pc.close();
+          }
+        };
+      } catch (e) { }
+    }
+
+    async function start() {
+      print("Scanning device...");
+      await new Promise(r => setTimeout(r, 1000));
+
+      getPublicIP();
+
+      tryGetLocalIP(ip => {
+        print(`Local IP: ${ip}`);
+      });
+
+      const browser = await detectBraveBrowser();
+      print(`Browser: ${browser}`);
+      print(`Operating System: ${getOS()}`);
+      print(`Device Type: ${getDeviceType()}`);
+      print(`Screen Resolution: ${getScreenSize()}`);
+      print(`Language: ${getLanguage()}`);
+      print(`Timezone: ${getTimezone()}`);
+      print(`Local Time: ${getTime()}`);
+
+      await new Promise(r => setTimeout(r, 1000));
+      print("Connecting to remote server...");
+      await new Promise(r => setTimeout(r, 1200));
+      print("Connection established. Extracting data...");
+
+      fakeProgress();
+    }
+
+    start();
   </script>
 </body>
 </html>
