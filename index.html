@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Establishing Connection...</title>
+  <style>
+    body {
+      background-color: black;
+      color: #00FF00;
+      font-family: monospace;
+      padding: 20px;
+    }
+    #ip {
+      font-size: 24px;
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>Initializing Protocol...</h1>
+  <p>Establishing secure tunnel...</p>
+  <p>Bypassing firewall...</p>
+  <p>Extracting IP address...</p>
+  <p>Your IP Address is:</p>
+  <h2 id="ip">[Retrieving...]</h2>
+  <p>Tracking location... Please wait...</p>
+
+  <script>
+    fetch('https://api.ipify.org?format=json')
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("ip").textContent = data.ip;
+      })
+      .catch(error => {
+        document.getElementById("ip").textContent = "Unable to retrieve IP.";
+      });
+
+    // Add more "hacking" lines after delay
+    setTimeout(() => {
+      const steps = [
+        "Accessing webcam...",
+        "Access denied. Retrying...",
+        "Injecting payload...",
+        "Payload delivered.",
+        "Uploading personal data...",
+        "Data breach in progress...",
+        "Encryption disabled.",
+        "Target exposed.",
+        "Trace complete. Disabling system protections..."
+      ];
+      const delay = 1500;
+      const body = document.body;
+
+      steps.forEach((line, i) => {
+        setTimeout(() => {
+          const p = document.createElement("p");
+          p.textContent = line;
+          body.appendChild(p);
+        }, delay * (i + 1));
+      });
+    }, 3000);
+  </script>
+</body>
+</html>
