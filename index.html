@@ -1,177 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Security Breach Terminal</title>
+  <meta charset="UTF-8">
+  <title>Security Breach</title>
   <style>
     body {
       background-color: black;
       color: #00FF00;
-      font-family: monospace;
-      padding: 20px;
-      overflow-y: auto;
+      font-family: 'Courier New', monospace;
       font-size: 18px;
-    }
-    h1 {
-      font-size: 24px;
-    }
-    .log-line {
-      margin: 5px 0;
-    }
-    .red {
-      color: red;
+      padding: 20px;
+      white-space: pre-line;
     }
   </style>
 </head>
 <body>
-  <h1>Initializing Breach...</h1>
-  <div id="log"></div>
+  <div id="terminal">Initializing secure connection...</div>
 
   <script>
-    const log = document.getElementById("log");
+    const terminal = document.getElementById('terminal');
+    let bypassProgress = 1;
+    let percentReached = false;
 
-    function writeLog(text, colorClass = "") {
-      const p = document.createElement("p");
-      p.textContent = text;
-      p.className = `log-line ${colorClass}`;
-      log.appendChild(p);
-      window.scrollTo(0, document.body.scrollHeight);
+    function writeLog(message) {
+      terminal.innerHTML += `\n${message}`;
+      terminal.scrollTop = terminal.scrollHeight;
     }
 
-    function getDeviceType() {
-      const ua = navigator.userAgent;
-      if (/tablet|ipad|playbook|silk/i.test(ua)) return "Tablet";
-      if (/mobi|android|iphone|ipod/i.test(ua)) return "Mobile";
-      return "Desktop";
-    }
+    async function getUserData() {
+      try {
+        const res = await fetch('https://ipapi.co/json/');
+        const data = await res.json();
 
-    function getOS() {
-      const ua = navigator.userAgent.toLowerCase();
-      if (ua.includes("windows nt")) return "Windows";
-      if (ua.includes("mac os x")) return "macOS";
-      if (ua.includes("android")) return "Android";
-      if (ua.includes("iphone") || ua.includes("ipad")) return "iOS";
-      if (ua.includes("linux")) return "Linux";
-      return "Unknown OS";
-    }
+        const userAgent = navigator.userAgent;
+        const os = navigator.platform;
+        const screenSize = `${screen.width}x${screen.height}`;
+        const localTime = new Date().toLocaleString();
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    function getBrowser() {
-      const ua = navigator.userAgent.toLowerCase();
-      if (ua.includes("edg")) return "Microsoft Edge";
-      if (ua.includes("brave")) return "Brave";
-      if (ua.includes("opr") || ua.includes("opera")) return "Opera";
-      if (ua.includes("vivaldi")) return "Vivaldi";
-      if (ua.includes("firefox")) return "Firefox";
-      if (ua.includes("safari") && !ua.includes("chrome")) return "Safari";
-      if (ua.includes("chrome")) return "Chrome";
-      if (ua.includes("chromium")) return "Chromium";
-      return "Unknown Browser";
-    }
-
-    fetch("https://ipapi.co/json/")
-      .then(res => res.json())
-      .then(data => {
         writeLog(`IP Address: ${data.ip}`);
-        writeLog(`Location: ${data.city}, ${data.country_name}`);
-        writeLog(`Device Type: ${getDeviceType()}`);
-        writeLog(`Operating System: ${getOS()}`);
-        writeLog(`Browser: ${getBrowser()}`);
-        writeLog(`Screen Resolution: ${window.screen.width}x${window.screen.height}`);
-        writeLog(`Local Time: ${new Date().toLocaleTimeString()}`);
-        writeLog(`Timezone: ${Intl.DateTimeFormat().resolvedOptions().timeZone}`);
-        startFakeHack();
-      })
-      .catch(() => {
-        writeLog("Unable to fetch IP/location data.", "red");
-        startFakeHack();
-      });
-
-    function startFakeHack() {
-      const messages = [
-        "Establishing secure tunnel...",
-        "Connection secured via 256-bit encryption...",
-        "Scanning ports...",
-        "Firewall bypassed...",
-        "Gmail account linked: mohabthegoat@gmail.com",
-        "Initiating credential dump...",
-        "Extracting hashed password...",
-        "Found SHA-256 hash: a9f3b...e27d1",
-        "Starting brute-force on hash...",
-        "Password cracked: ••••••••",
-        "Accessing Gmail inbox...",
-        "2FA detected: Google Authenticator",
-        "Simulating OTP entry...",
-        "OTP failed. Attempting backup method...",
-        "SMS verification bypassed...",
-        "Voice authentication engaged...",
-        "Deepfaking audio sample...",
-        "Audio passed: matched 92%",
-        "FaceID spoof initialized...",
-        "Analyzing facial depth...",
-        "Face match: 88% - spoof successful",
-        "Token generated...",
-        "Session hijack underway...",
-        "Injecting tracking beacon...",
-        "Persistence granted.",
-        "Opening vault access...",
-        "Reading account recovery...",
-        "2FA status: Partial Bypass",
-        "Gmail now 34% compromised...",
-        "Simulating Google Admin override...",
-        "MFA protections weakening...",
-        "Cloning SIM card...",
-        "Requesting eSIM profile...",
-        "Creating mirrored phone number...",
-        "Backup code intercepted...",
-        "Cloud sync accessed...",
-        "Google Drive attached...",
-        "Exporting files...",
-        "Access token injected into browser...",
-        "Logging keyboard strokes...",
-        "Security question bypassed: Mother's maiden name: •••••",
-        "Captcha defeated with AI recognition...",
-        "Browser cookies cloned...",
-        "Chrome Extension injected...",
-        "Internal Google system pinged...",
-        "Authorization spoofed...",
-        "Admin panel leaked...",
-        "Flag: [G00GL3_ROOT_ACCESS]",
-        "Starting screen recording...",
-        "Microphone access granted...",
-        "Camera: ON",
-        "Disabling antivirus...",
-        "System firewall disabled...",
-        "Establishing remote desktop...",
-        "Mapping local network...",
-        "Connected devices: 3",
-        "Router admin login brute-force initiated...",
-        "DNS poisoned.",
-        "Tracking geolocation...",
-        "Live GPS sync complete.",
-        "Now monitoring user activity...",
-        "Uploading data packet...",
-        "User behavior analysis...",
-        "Fingerprinting browser session...",
-        "Replaying user history...",
-        "Cross-referencing social logins...",
-        "Finalizing breach..."
-      ];
-
-      let i = 0;
-
-      function loopLogs() {
-        if (i < messages.length) {
-          writeLog(messages[i]);
-          i++;
-        } else {
-          const percent = Math.floor(Math.random() * 3) + 97;
-          writeLog(`2FA bypass at ${percent}%...`);
-        }
-        setTimeout(loopLogs, 1500);
+        writeLog(`City: ${data.city}`);
+        writeLog(`Region: ${data.region}`);
+        writeLog(`Country: ${data.country_name}`);
+        writeLog(`Timezone: ${timezone}`);
+        writeLog(`Local Time: ${localTime}`);
+        writeLog(`Browser: ${getBrowserName(userAgent)}`);
+        writeLog(`Device OS: ${os}`);
+        writeLog(`Screen Size: ${screenSize}`);
+        writeLog(`--- Beginning system scan...`);
+      } catch (error) {
+        writeLog('Unable to fetch IP data.');
       }
-
-      loopLogs();
     }
+
+    function getBrowserName(userAgent) {
+      if (userAgent.includes("Brave")) return "Brave";
+      if (userAgent.includes("Edg")) return "Microsoft Edge";
+      if (userAgent.includes("OPR") || userAgent.includes("Opera")) return "Opera";
+      if (userAgent.includes("Chrome")) return "Chrome";
+      if (userAgent.includes("Safari")) return "Safari";
+      if (userAgent.includes("Firefox")) return "Firefox";
+      if (userAgent.includes("MSIE") || userAgent.includes("Trident")) return "Internet Explorer";
+      return "Unknown";
+    }
+
+    function updateBypassProgress() {
+      if (bypassProgress < 99) {
+        if (Math.random() < 0.7) {
+          bypassProgress++;
+        }
+        writeLog(`2FA bypass at ${bypassProgress}%...`);
+      } else if (!percentReached) {
+        writeLog(`2FA bypass at 99%...`);
+        percentReached = true;
+      }
+    }
+
+    const fakeLogs = [
+      "Establishing remote connection...",
+      "Bypassing firewall...",
+      "Gmail account linked: *********@gmail.com",
+      "Retrieving saved passwords...",
+      "Accessing browser cookies...",
+      "Injecting token...",
+      "Decrypting vault...",
+      "Analyzing facial recognition...",
+      "Extracting Discord tokens...",
+      "Disabling antivirus...",
+      "Uploading session logs...",
+      "Voice pattern matched...",
+      "Location triangulated...",
+      "Camera access: enabled",
+      "Microphone: ON",
+      "Retrieving recent activity logs...",
+      "Spoofing IP...",
+      "Injecting malware payload...",
+      "Initializing system override...",
+      "Screenshot captured",
+      "Collecting Wi-Fi credentials...",
+      "Cracking user PIN...",
+      "Downloading keystroke history...",
+      "Connecting to darknet relay...",
+      "Uploading data to external server...",
+      "Injecting adware...",
+      "Spoofing MAC address...",
+      "Stealing Steam credentials...",
+      "Attempting BIOS overwrite...",
+      "Injecting spoofed driver...",
+      "Root access attempt #3...",
+    ];
+
+    let logIndex = 0;
+
+    function loopLogs() {
+      if (Math.random() < 0.25) {
+        updateBypassProgress();
+      } else {
+        const log = fakeLogs[logIndex % fakeLogs.length];
+        writeLog(log);
+        logIndex++;
+      }
+      setTimeout(loopLogs, 800 + Math.random() * 400);
+    }
+
+    getUserData();
+    setTimeout(loopLogs, 2000);
   </script>
 </body>
 </html>
