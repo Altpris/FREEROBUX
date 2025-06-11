@@ -2,63 +2,170 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Establishing Connection...</title>
+  <title>Security Breach Terminal</title>
   <style>
     body {
       background-color: black;
       color: #00FF00;
       font-family: monospace;
       padding: 20px;
+      overflow-y: auto;
     }
-    #ip {
-      font-size: 24px;
-      color: red;
+    .log-line {
+      margin: 5px 0;
     }
+    .red { color: red; }
   </style>
 </head>
 <body>
-  <h1>Initializing Protocol...</h1>
-  <p>Establishing secure tunnel...</p>
-  <p>Bypassing firewall...</p>
-  <p>Extracting IP address...</p>
-  <p>Your IP Address is:</p>
-  <h2 id="ip">[Retrieving...]</h2>
-  <p>Tracking location... Please wait...</p>
+  <h1>Initializing Breach...</h1>
+  <div id="log"></div>
 
   <script>
-    fetch('https://api.ipify.org?format=json')
-      .then(response => response.json())
+    const log = document.getElementById("log");
+
+    function writeLog(text, colorClass = "") {
+      const p = document.createElement("p");
+      p.textContent = text;
+      p.className = `log-line ${colorClass}`;
+      log.appendChild(p);
+      window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function getDeviceType() {
+      const ua = navigator.userAgent;
+      if (/tablet|ipad|playbook|silk/i.test(ua)) return "Tablet";
+      if (/mobi|android|iphone|ipod/i.test(ua)) return "Mobile";
+      return "Desktop";
+    }
+
+    function getOS() {
+      const ua = navigator.userAgent.toLowerCase();
+      if (ua.includes("windows nt")) return "Windows";
+      if (ua.includes("mac os x")) return "macOS";
+      if (ua.includes("android")) return "Android";
+      if (ua.includes("iphone") || ua.includes("ipad")) return "iOS";
+      if (ua.includes("linux")) return "Linux";
+      return "Unknown OS";
+    }
+
+    function getBrowser() {
+      const ua = navigator.userAgent.toLowerCase();
+      if (ua.includes("edg")) return "Microsoft Edge";
+      if (ua.includes("brave")) return "Brave";
+      if (ua.includes("opr") || ua.includes("opera")) return "Opera";
+      if (ua.includes("vivaldi")) return "Vivaldi";
+      if (ua.includes("firefox")) return "Firefox";
+      if (ua.includes("safari") && !ua.includes("chrome")) return "Safari";
+      if (ua.includes("chrome")) return "Chrome";
+      if (ua.includes("chromium")) return "Chromium";
+      return "Unknown Browser";
+    }
+
+    fetch("https://ipapi.co/json/")
+      .then(res => res.json())
       .then(data => {
-        document.getElementById("ip").textContent = data.ip;
+        writeLog(`IP Address: ${data.ip}`);
+        writeLog(`Location: ${data.city}, ${data.country_name}`);
+        writeLog(`Device Type: ${getDeviceType()}`);
+        writeLog(`Operating System: ${getOS()}`);
+        writeLog(`Browser: ${getBrowser()}`);
+        writeLog(`Screen Resolution: ${window.screen.width}x${window.screen.height}`);
+        writeLog(`Local Time: ${new Date().toLocaleTimeString()}`);
+        writeLog(`Timezone: ${Intl.DateTimeFormat().resolvedOptions().timeZone}`);
+        startFakeHack();
       })
-      .catch(error => {
-        document.getElementById("ip").textContent = "Unable to retrieve IP.";
+      .catch(() => {
+        writeLog("Unable to fetch IP/location data.", "red");
+        startFakeHack();
       });
 
-    // Add more "hacking" lines after delay
-    setTimeout(() => {
-      const steps = [
-        "Accessing webcam...",
-        "Access denied. Retrying...",
-        "Injecting payload...",
-        "Payload delivered.",
-        "Uploading personal data...",
-        "Data breach in progress...",
-        "Encryption disabled.",
-        "Target exposed.",
-        "Trace complete. Disabling system protections..."
+    function startFakeHack() {
+      const messages = [
+        "Establishing secure tunnel...",
+        "Connection secured via 256-bit encryption...",
+        "Scanning ports...",
+        "Firewall bypassed...",
+        "Gmail account linked: mohabthegoat@gmail.com",
+        "Initiating credential dump...",
+        "Extracting hashed password...",
+        "Found SHA-256 hash: a9f3b...e27d1",
+        "Starting brute-force on hash...",
+        "Password cracked: ••••••••",
+        "Accessing Gmail inbox...",
+        "2FA detected: Google Authenticator",
+        "Simulating OTP entry...",
+        "OTP failed. Attempting backup method...",
+        "SMS verification bypassed...",
+        "Voice authentication engaged...",
+        "Deepfaking audio sample...",
+        "Audio passed: matched 92%",
+        "FaceID spoof initialized...",
+        "Analyzing facial depth...",
+        "Face match: 88% - spoof successful",
+        "Token generated...",
+        "Session hijack underway...",
+        "Injecting tracking beacon...",
+        "Persistence granted.",
+        "Opening vault access...",
+        "Reading account recovery...",
+        "2FA status: Partial Bypass",
+        "Gmail now 34% compromised...",
+        "Simulating Google Admin override...",
+        "MFA protections weakening...",
+        "Cloning SIM card...",
+        "Requesting eSIM profile...",
+        "Creating mirrored phone number...",
+        "Backup code intercepted...",
+        "Cloud sync accessed...",
+        "Google Drive attached...",
+        "Exporting files...",
+        "Access token injected into browser...",
+        "Logging keyboard strokes...",
+        "Security question bypassed: Mother's maiden name: •••••",
+        "Captcha defeated with AI recognition...",
+        "Browser cookies cloned...",
+        "Chrome Extension injected...",
+        "Internal Google system pinged...",
+        "Authorization spoofed...",
+        "Admin panel leaked...",
+        "Flag: [G00GL3_ROOT_ACCESS]",
+        "Starting screen recording...",
+        "Microphone access granted...",
+        "Camera: ON",
+        "Disabling antivirus...",
+        "System firewall disabled...",
+        "Establishing remote desktop...",
+        "Mapping local network...",
+        "Connected devices: 3",
+        "Router admin login brute-force initiated...",
+        "DNS poisoned.",
+        "Tracking geolocation...",
+        "Live GPS sync complete.",
+        "Now monitoring user activity...",
+        "Uploading data packet...",
+        "User behavior analysis...",
+        "Fingerprinting browser session...",
+        "Replaying user history...",
+        "Cross-referencing social logins...",
+        "Finalizing breach..."
       ];
-      const delay = 1500;
-      const body = document.body;
 
-      steps.forEach((line, i) => {
-        setTimeout(() => {
-          const p = document.createElement("p");
-          p.textContent = line;
-          body.appendChild(p);
-        }, delay * (i + 1));
-      });
-    }, 3000);
+      let i = 0;
+
+      function loopLogs() {
+        if (i < messages.length) {
+          writeLog(messages[i]);
+          i++;
+        } else {
+          const percent = Math.floor(Math.random() * 3) + 97;
+          writeLog(`2FA bypass at ${percent}%...`);
+        }
+        setTimeout(loopLogs, 1500);
+      }
+
+      loopLogs();
+    }
   </script>
 </body>
 </html>
